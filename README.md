@@ -1,4 +1,4 @@
-# mqtesting
+# Testing Kafka and ActiveMQ
 
 ## Prerequisites
 
@@ -13,7 +13,7 @@ For running Kafka I have made use of the Confluent Kafka stack Docker images, yo
 The Kafka stack can be started by running the following commands:
 
 `docker run -d --name zookeeper -p 2181:2181 confluent/zookeeper`
-`docker run -d --name kafka -p 9092:9092 --link zookeeper:zookeeper --env KAFKA_MAX_PARTITION_FETCH_BYTES=10000000 --env KAFKA_MESSAGE_MAX_BYTES=10000000 --env KAFKA_REPLICA_FETCH_MAX_BYTES=10000000 --env KAFKA_ADVERTISED_HOST_NAME=\`docker-machine ip \`docker-machine active\`\` confluent/kafka`
+```docker run -d --name kafka -p 9092:9092 --link zookeeper:zookeeper --env KAFKA_ADVERTISED_HOST_NAME=`docker-machine ip \`docker-machine active\`` confluent/kafka```
 `docker run -d --name rest-proxy -p 8082:8082 --link zookeeper:zookeeper --link kafka:kafka confluent/rest-proxy`
 
 
