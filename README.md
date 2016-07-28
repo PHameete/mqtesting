@@ -26,6 +26,10 @@ To expose Kafka via a REST interface the Confluent REST proxy can be started as 
 
 The REST interface can be accessed on your docker machine IP via port 8082. Further specifications of the REST interface can be found at [https://github.com/confluentinc/kafka-rest](https://github.com/confluentinc/kafka-rest).
 
+### Kafka NodeJS consumer and producer
+
+The NodeJS consumer and producer for Kafka require the [https://www.npmjs.com/package/kafka-node](https://www.npmjs.com/package/kafka-node) npm package. You can install it by performing `npm install kafka-node` in the directory of the producer and consumer javascript files. Run the programs using `node consumer.js` and `node producer.js`.
+
 ### Supporting large messages
 
 To support large messages by the Broker, include the following parameters when starting the Kafka Docker container:
@@ -61,6 +65,10 @@ The admin web interface can be reached in my case at 192.168.99.100:8161 (user: 
 ### Exposing ActiveMQ via REST
 
 ActiveMQ natively supports REST so this is running out of the box. For detailed specifications see [http://activemq.apache.org/rest.html](http://activemq.apache.org/rest.html). 
+
+### ActiveMQ NodeJS consumer and producer
+
+The NodeJS consumer and producer for ActiveMQ require the [https://www.npmjs.com/package/stompit](https://www.npmjs.com/package/stompit) npm package. You can install it by performing `npm install stompit` in the directory of the producer and consumer javascript files. Run the programs using `node consumer.js` and `node producer.js`.
 
 ### Enabling message compression
 
