@@ -14,6 +14,12 @@ public class Consumer implements Runnable, ExceptionListener {
     Histogram stats = new Histogram(1, 10000000, 2);
     Histogram global = new Histogram(1, 10000000, 2);
 
+    public static void main(String[] args) {
+        Thread brokerThread = new Thread(new Consumer());
+        brokerThread.setDaemon(false);
+        brokerThread.start();
+    }
+
     public void run() {
         try {
 
@@ -22,6 +28,7 @@ public class Consumer implements Runnable, ExceptionListener {
 
             // Create a Connection
             Connection connection = connectionFactory.createConnection();
+            connectionFactory.setUseCompression(true);
             connection.start();
 
             connection.setExceptionListener(this);
@@ -39,7 +46,6 @@ public class Consumer implements Runnable, ExceptionListener {
 
             boolean running = true;
             while (running) {
-                // read records with a short timeout. If we time out, we don't really care.
                 Message message = messageConsumer.receive(100);
                 if (message instanceof TextMessage) {
                     TextMessage textMessage = (TextMessage) message;

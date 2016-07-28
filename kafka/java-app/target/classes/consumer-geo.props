@@ -1,0 +1,12 @@
+bootstrap.servers=192.168.99.100:9092
+group.id=test-geo
+enable.auto.commit=true
+key.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+
+# fast session timeout makes it more fun to play with failover
+session.timeout.ms=10000
+
+# ensures that we dont process all history when subscribing to a topic
+auto.offset.reset=earliest
+max.partition.fetch.bytes=100000000

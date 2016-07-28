@@ -8,10 +8,17 @@ import java.util.Locale;
  */
 public class Producer implements Runnable {
 
+    public static void main(String[] args) {
+        Thread brokerThread = new Thread(new Producer());
+        brokerThread.setDaemon(false);
+        brokerThread.start();
+    }
+
     public void run() {
         try {
             // Create a ConnectionFactory
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://192.168.99.100:61616");
+            connectionFactory.setUseCompression(true);
             connectionFactory.setUseAsyncSend(true);
 
             // Create a Connection
@@ -22,7 +29,7 @@ public class Producer implements Runnable {
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
             // Create the destination (Topic or Queue)
-            Destination messages = session.createTopic("test");
+            Destination messages = session.createTopic("messages");
             Destination markers = session.createTopic("markers");
 
             // Create MessageProducers from the Session to the Topic or Queue
