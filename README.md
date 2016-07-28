@@ -13,7 +13,15 @@ For running Kafka I have made use of the Confluent Kafka stack Docker images, yo
 The Kafka stack can be started by running the following commands:
 
 `docker run -d --name zookeeper -p 2181:2181 confluent/zookeeper`
+
 ```docker run -d --name kafka -p 9092:9092 --link zookeeper:zookeeper --env KAFKA_ADVERTISED_HOST_NAME=`docker-machine ip \`docker-machine active\`` confluent/kafka```
+
+note: in order to start a broker that supports large messages the following parameters should be added when starting the Kafka container:
+
+`--env KAFKA_MAX_PARTITION_FETCH_BYTES=<maxbytes> --env KAFKA_MESSAGE_MAX_BYTES=<maxbytes> --env KAFKA_REPLICA_FETCH_MAX_BYTES=<maxbytes>`
+
+Optionally to expose Kafka via a REST interface the Confluent REST proxy can be started as well:
+
 `docker run -d --name rest-proxy -p 8082:8082 --link zookeeper:zookeeper --link kafka:kafka confluent/rest-proxy`
 
 
