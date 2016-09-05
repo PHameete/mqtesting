@@ -20,7 +20,7 @@ public class GeoJSONProducer {
 
         String geoJson = Resources.toString(Resources.getResource("test.geojson"), Charsets.UTF_8);
         try {
-            for (int i = 0; i < 1000; i++) {
+            for (int i = 0; i < 200; i++) {
                 // send a large number of large geojson messages
                 producer.send(new ProducerRecord<String, String>(
                         "test-geojson3",

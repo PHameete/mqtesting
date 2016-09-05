@@ -1,4 +1,4 @@
-bootstrap.servers=192.168.99.100:9092
+bootstrap.servers=134.221.20.239:3334
 key.serializer=org.apache.kafka.common.serialization.StringSerializer
 value.serializer=org.apache.kafka.common.serialization.StringSerializer
 compression.codec=1
