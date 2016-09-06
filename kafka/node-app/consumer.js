@@ -1,40 +1,28 @@
 'use strict';
 
-var kafka = require('kafka-node');
-var Consumer = kafka.Consumer;
-var Offset = kafka.Offset;
-var Client = kafka.Client;
-var argv = require('optimist').argv;
-var topic = argv.topic || 'test-node-message';
+var kafkaesque = require('kafkaesque')({brokers: [{host: '134.221.20.239', port: 3334}],
+                                               clientId: 'fish',
+                                               group: 'cheese',
+                                               maxBytes: 1024*1024});
 
-var client = new Client('192.168.99.100:2181');
-var topics = [
-    {topic: topic}
-];
-var options = { autoCommit: false, fetchMaxWaitMs: 100, fetchMaxBytes: 1024 * 1024 };
+// this is the poll handler, passed to .poll()
+// this is called per partition that kafkaesque connects to
+// when invoking .poll()
+var poll = function (err, kafka) {
+  console.log(err);
 
-var consumer = new Consumer(client, topics, options);
-var offset = new Offset(client);
+  // handle messaged from kafka
+  kafka.on('message', function(message, commit) {
+    console.log(JSON.stringify(message));
 
-consumer.on('message', function (message) {
-  console.log(message);
-});
-
-consumer.on('error', function (err) {
-  console.log('error', err);
-});
-
-/*
-* If consumer get `offsetOutOfRange` event, fetch data from the smallest(oldest) offset
-*/
-consumer.on('offsetOutOfRange', function (topic) {
-	console.log('offset out of range');
-  topic.maxNum = 2;
-  offset.fetch([topic], function (err, offsets) {
-    if (err) {
-      return console.error(err);
-    }
-    var min = Math.min(offsets[topic.topic][topic.partition]);
-    consumer.setOffset(topic.topic, topic.partition, min);
+    // ensure the offset is commited so kafkaesque can provide the next message from kafka
+    commit();
   });
-});
+
+  kafka.on('error', function(error) {
+    console.log(JSON.stringify(error));
+  });
+};
+
+// to fetch from the begining for all partitions
+kafkaesque.poll({topic: 'test-flooding', offset: 0}, poll)
